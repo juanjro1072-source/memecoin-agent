@@ -13,3 +13,6 @@ __pycache__/
 *seed*
 *semilla*
 *wallet*.json
+
+# Diarios generados por el simulador (se crean en tu computadora al correrlo)
+diario/sombra/

@@ -70,5 +70,9 @@ opera**. Ante la duda, no se opera.
 ## Estado actual
 
 - Existe el radar (sólo detecta y avisa).
-- **Todavía no hay código de trading.** No escribirlo hasta que el dueño lo
-  pida.
+- Existe el simulador del modo sombra (`trading/`): opera sólo con dinero
+  ficticio en un mercado inventado.
+- **No hay código que opere con dinero real.** No escribirlo hasta que el
+  dueño lo pida explícitamente.
+- Pruebas: `python -m unittest discover -s tests -t .` (deben pasar antes de
+  cada commit).

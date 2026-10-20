@@ -16,3 +16,30 @@ max_por_dia_usd = 30
 
 # Máximo que puede haber invertido en total en UNA wallet (dólares).
 max_por_wallet_usd = 100
+
+# Si al ejecutar el precio empeora más que este %, la operación se cancela
+# (y la comisión de red se pierde igual, como en la vida real).
+slippage_maximo_pct = 5
+
+
+[estrategia]
+# Comprar sólo si el radar da al menos este HYPE (0-100)...
+hype_minimo = 60
+# ...y como mucho este RIESGO (0-100).
+riesgo_maximo = 40
+# Vender cuando la posición gane este % ...
+tomar_ganancia_pct = 50
+# ... o cuando pierda este %.
+cortar_perdida_pct = 25
+
+
+[seguridad]
+# Revisión de wallets antes de comprar. Si un dato falta, no se compra.
+# Máximo % del token que pueden tener juntos los 10 mayores dueños.
+max_top10_holders_pct = 50
+# Máximo % del token que puede tener la wallet del creador.
+max_creador_pct = 10
+# true = sólo comprar si la liquidez está bloqueada (el creador no puede llevársela).
+exigir_liquidez_bloqueada = true
+# Máximo de wallets recién creadas que compraron a la vez (señal de bots del creador).
+max_wallets_coordinadas = 5

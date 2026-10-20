@@ -26,7 +26,7 @@ Con esas dos notas, cada token cae en un arquetipo:
 
 ## Uso
 
-Requiere Python 3.10+. No tiene dependencias externas.
+Requiere Python 3.11+. No tiene dependencias externas.
 
 ```bash
 # Prueba sin internet con 5 tokens de ejemplo (uno de cada arquetipo)
@@ -65,6 +65,22 @@ export TELEGRAM_CHAT_ID="123456789"
 # Discord: Ajustes del canal → Integraciones → Webhooks
 export DISCORD_WEBHOOK_URL="https://discord.com/api/webhooks/..."
 ```
+
+## Simulador del modo sombra
+
+Un día entero de trading con **dinero ficticio** en un mercado inventado:
+
+```bash
+python -m trading                 # un día nuevo al azar
+python -m trading --semilla 42    # repetir exactamente el mismo día
+```
+
+- Antes de cada operación lee `config/limites.toml` y revisa si existe `PARAR.txt`.
+- Paga comisiones, sufre slippage y a veces la red falla, como en la vida real.
+- Hay tokens trampa: **rug-pulls** (el creador se lleva el dinero) y
+  **honeypots** (puedes comprar pero no vender). Algunos van disfrazados.
+- Cada operación, rechazo o fallo deja una autopsia en `diario/sombra/`, más
+  un `RESUMEN.md` con la ganancia o pérdida y los aciertos.
 
 ## Tests
 
