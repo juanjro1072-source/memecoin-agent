@@ -1,0 +1,69 @@
+[
+  {
+    "chainId": "solana",
+    "url": "https://dexscreener.com/solana/demo-rocket",
+    "baseToken": {"address": "DemoRocket1111111111111111111111111111111111", "name": "Capybara Astronaut", "symbol": "CAPYX"},
+    "priceUsd": "0.00421",
+    "liquidity": {"usd": 185000},
+    "fdv": 4200000,
+    "volume": {"h1": 410000, "h24": 2100000},
+    "txns": {"m5": {"buys": 88, "sells": 41}, "h1": {"buys": 1240, "sells": 610}},
+    "priceChange": {"m5": 6.2, "h1": 140, "h24": 380},
+    "info": {"websites": [{"url": "https://example.com"}], "socials": [{"type": "twitter"}, {"type": "telegram"}, {"type": "discord"}]},
+    "_age_minutes": 420
+  },
+  {
+    "chainId": "solana",
+    "url": "https://dexscreener.com/solana/demo-sprout",
+    "baseToken": {"address": "DemoSprout111111111111111111111111111111111", "name": "Tiny Frog Club", "symbol": "TFROG"},
+    "priceUsd": "0.000188",
+    "liquidity": {"usd": 92000},
+    "fdv": 1500000,
+    "volume": {"h1": 95000, "h24": 380000},
+    "txns": {"m5": {"buys": 30, "sells": 16}, "h1": {"buys": 300, "sells": 170}},
+    "priceChange": {"m5": 2.1, "h1": 45, "h24": 120},
+    "info": {"websites": [{"url": "https://example.com"}], "socials": [{"type": "twitter"}, {"type": "telegram"}]},
+    "_age_minutes": 900
+  },
+  {
+    "chainId": "base",
+    "url": "https://dexscreener.com/base/demo-casino",
+    "baseToken": {"address": "0xDemoCasino00000000000000000000000000000000", "name": "Elon's Hamster", "symbol": "HAMLON"},
+    "priceUsd": "0.0000071",
+    "liquidity": {"usd": 14000},
+    "fdv": 2900000,
+    "volume": {"h1": 61000, "h24": 75000},
+    "txns": {"m5": {"buys": 120, "sells": 60}, "h1": {"buys": 800, "sells": 150}},
+    "priceChange": {"m5": 18, "h1": 820, "h24": 820},
+    "info": {"socials": [{"type": "twitter"}]},
+    "boosts": {"active": 500},
+    "_age_minutes": 22
+  },
+  {
+    "chainId": "bsc",
+    "url": "https://dexscreener.com/bsc/demo-honeypot",
+    "baseToken": {"address": "0xDemoHoney000000000000000000000000000000000", "name": "SafeMoon Inu 2", "symbol": "SAFEINU"},
+    "priceUsd": "0.00000002",
+    "liquidity": {"usd": 3800},
+    "fdv": 900000,
+    "volume": {"h1": 2600, "h24": 2600},
+    "txns": {"m5": {"buys": 9, "sells": 0}, "h1": {"buys": 64, "sells": 0}},
+    "priceChange": {"m5": 4, "h1": 60, "h24": 60},
+    "info": {},
+    "boosts": {"active": 100},
+    "_age_minutes": 15
+  },
+  {
+    "chainId": "ethereum",
+    "url": "https://dexscreener.com/ethereum/demo-sleepy",
+    "baseToken": {"address": "0xDemoSleepy00000000000000000000000000000000", "name": "Grumpy Penguin", "symbol": "GRUMP"},
+    "priceUsd": "0.0102",
+    "liquidity": {"usd": 260000},
+    "fdv": 5100000,
+    "volume": {"h1": 4000, "h24": 90000},
+    "txns": {"m5": {"buys": 1, "sells": 2}, "h1": {"buys": 14, "sells": 19}},
+    "priceChange": {"m5": -0.4, "h1": -3, "h24": -11},
+    "info": {"websites": [{"url": "https://example.com"}], "socials": [{"type": "twitter"}]},
+    "_age_minutes": 30000
+  }
+]
