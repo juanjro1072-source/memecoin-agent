@@ -28,16 +28,20 @@ INTENTOS_HONEYPOT = 3  # tras 3 ventas bloqueadas, se da la posición por perdid
 
 
 class Simulador:
-    def __init__(self, cfg: Config, semilla: int, n_tokens: int, carpeta_diario: Path,
+    def __init__(self, cfg: Config, semilla: int, n_tokens: int, carpeta_diario: Path | None,
                  ruta_parar: Path = RUTA_PARAR, fecha: date | None = None):
         self.cfg = cfg
         self.semilla = semilla
-        self.rng = random.Random(semilla)
+        # Dos "dados" separados: el del mercado sólo depende de la semilla, así
+        # el mismo día es idéntico para cualquier estrategia que lo opere.
+        self.rng_mercado = random.Random(semilla)
+        self.rng_ejecucion = random.Random(f"ejecucion-{semilla}")
         self.ruta_parar = ruta_parar
         self.fecha = (fecha or date.today()).isoformat()
         self.inicio = datetime.combine(fecha or date.today(), time())
-        self.tokens = generar_tokens(self.rng, n_tokens, self.inicio.timestamp())
-        self.diario = diario_mod.Diario(carpeta_diario, self.fecha)
+        self.tokens = generar_tokens(self.rng_mercado, n_tokens, self.inicio.timestamp())
+        # Sin carpeta no se escriben autopsias (el laboratorio guarda un registro compacto).
+        self.diario = diario_mod.Diario(carpeta_diario, self.fecha) if carpeta_diario else diario_mod.DiarioNulo()
 
         self.caja = cfg.saldo_inicial
         self.gastado_hoy = 0.0
@@ -45,7 +49,7 @@ class Simulador:
         self.coste_slippage = 0.0
         self.posiciones: list[Posicion] = []
         self.rechazos: list[tuple[Candidato, str, list[str]]] = []
-        self.fallidas: list[Candidato] = []
+        self.fallidas: list[tuple[Candidato, str]] = []
         self.ventas_fallidas = 0
         self.vistos = 0
         self.candidatos = 0
@@ -72,7 +76,7 @@ class Simulador:
             if not self._puedo_operar(hora):
                 break
             for t in self.tokens:
-                t.avanzar(paso, self.rng)
+                t.avanzar(paso, self.rng_mercado)
             self._revisar_salidas(hora)
             for t in self.tokens:
                 if t.paso_lanzamiento == paso and self.parado_en is None:
@@ -94,12 +98,12 @@ class Simulador:
         ahora = self.inicio.timestamp() + paso * PASO_MINUTOS * 60
         veredicto = evaluate(t.par, now=ahora)
         self.vistos += 1
-        if veredicto.hype < self.cfg.hype_minimo:
-            return  # no le interesa al radar: no es una operación
+        if not self._interesa(veredicto):
+            return  # no le interesa: no es una operación
         self.candidatos += 1
         cand = Candidato(t, veredicto, hora, t.precio)
 
-        motivos = revisar(veredicto, t.billeteras, self.cfg)
+        motivos = self._revision_seguridad(veredicto, t)
         if motivos:
             self._rechazar(cand, "seguridad", motivos)
             return
@@ -110,17 +114,23 @@ class Simulador:
         if not self._puedo_operar(hora):
             return
 
-        ej = comprar(self.rng, t, monto, self.cfg.slippage_maximo_pct)
+        ej = comprar(self.rng_ejecucion, t, monto, self.cfg.slippage_maximo_pct)
         self.caja -= ej.comision_red
         self.comisiones += ej.comision_red + ej.comision_dex
         if not ej.ok:
-            self.fallidas.append(cand)
+            self.fallidas.append((cand, ej.motivo))
             self.diario.compra_fallida(cand, monto, ej)
             return
         self.caja -= ej.usd
         self.gastado_hoy += ej.usd
         self.coste_slippage += ej.usd * ej.slippage_pct / 100
         self.posiciones.append(Posicion(cand, ej, hora, nota))
+
+    def _interesa(self, veredicto) -> bool:
+        return veredicto.hype >= self.cfg.hype_minimo
+
+    def _revision_seguridad(self, veredicto, t) -> list[str]:
+        return revisar(veredicto, t.billeteras, self.cfg)
 
     def _monto_permitido(self) -> tuple[float, str]:
         """Regla 2: el monto es el menor de todos los límites de limites.toml."""
@@ -154,7 +164,7 @@ class Simulador:
         if not self._puedo_operar(hora):
             return
         t = p.cand.token
-        ej = vender(self.rng, t, p.compra.cantidad, slippage_max)
+        ej = vender(self.rng_ejecucion, t, p.compra.cantidad, slippage_max)
         self.caja -= ej.comision_red
         p.comisiones_venta += ej.comision_red
         self.comisiones += ej.comision_red + ej.comision_dex
@@ -180,3 +190,24 @@ class Simulador:
                 if not p.atrapada:
                     # Al cierre se vende a cualquier precio: tolerancia de slippage 100 %.
                     self._vender(p, hora, "cierre del día", 100.0)
+
+
+class Mono(Simulador):
+    """Grupo de control: elige tokens AL AZAR, sin radar ni revisión anti-estafa.
+
+    Opera el mismo mercado, con los mismos límites, comisiones, slippage y
+    reglas de venta. Si una estrategia no le gana claramente, sus filtros
+    no aportan nada.
+    """
+
+    PROB_DARDO = 0.25  # cada token nuevo tiene un 25 % de recibir el dardo
+
+    def __init__(self, *args, numero_mono: int = 0, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.rng_mono = random.Random(f"mono-{self.semilla}-{numero_mono}")
+
+    def _interesa(self, veredicto) -> bool:
+        return self.rng_mono.random() < self.PROB_DARDO
+
+    def _revision_seguridad(self, veredicto, t) -> list[str]:
+        return []

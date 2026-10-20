@@ -125,6 +125,15 @@ class Diario:
         return ruta
 
 
+class DiarioNulo:
+    """No escribe autopsias. Lo usa el laboratorio, que guarda un registro compacto."""
+
+    def rechazo(self, *args) -> None: ...
+    def compra_fallida(self, *args) -> None: ...
+    def operacion(self, *args) -> None: ...
+    def resumen(self, *args) -> None: ...
+
+
 def _leccion(p: Posicion) -> str:
     t = p.cand.token
     if p.atrapada:

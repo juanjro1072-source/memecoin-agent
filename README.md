@@ -82,6 +82,19 @@ python -m trading --semilla 42    # repetir exactamente el mismo día
 - Cada operación, rechazo o fallo deja una autopsia en `diario/sombra/`, más
   un `RESUMEN.md` con la ganancia o pérdida y los aciertos.
 
+## Laboratorio de estrategias
+
+```bash
+python -m trading.laboratorio
+```
+
+Prueba 81 combinaciones de ajustes en 140 días simulados, elige la mejor y
+**sólo entonces** la valida en 60 días que no se usaron para elegir. Todo se
+compara contra un **mono con dardos** que compra al azar con los mismos
+costos. El informe queda en `informes/` y **nunca modifica `limites.toml`**:
+los cambios los decide el dueño. Ojo: los días son **inventados** por el
+simulador, no datos reales del mercado.
+
 ## Tests
 
 ```bash

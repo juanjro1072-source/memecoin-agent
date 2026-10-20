@@ -7,6 +7,7 @@ ninguna forma de operar con dinero real.
 python -m trading                 # un día nuevo al azar
 python -m trading --semilla 42    # repetir exactamente el mismo día
 python -m trading --tokens 100    # un día con más lanzamientos
+python -m trading.laboratorio     # laboratorio de estrategias (unos 2 minutos)
 ```
 
 | Archivo | Qué hace |
@@ -17,4 +18,5 @@ python -m trading --tokens 100    # un día con más lanzamientos
 | `seguridad.py` | Revisión anti-estafa antes de comprar (radar + wallets). |
 | `simulador.py` | El bucle del día, en pasos de 15 minutos. |
 | `diario.py` | Escribe las autopsias y el `RESUMEN.md` en `diario/sombra/`. |
+| `laboratorio.py` | Prueba ajustes en 140 días, valida en 60 días nunca vistos y compara contra el mono. |
 | `modelos.py` | Las "fichas" de datos que se pasan entre las piezas. |

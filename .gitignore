@@ -16,3 +16,8 @@ __pycache__/
 
 # Diarios generados por el simulador (se crean en tu computadora al correrlo)
 diario/sombra/
+
+# Laboratorio: el registro compacto y las autopsias de validación pesan mucho
+# y se regeneran al correrlo. Sólo se sube INFORME.md.
+informes/*/registro_compacto.csv.gz
+informes/*/validacion/
