@@ -35,12 +35,17 @@ python3 --version
 
 ### 3. Descargar el proyecto
 
-1. Entra en tu repo en GitHub: https://github.com/juanjro1072-source/memecoin-agent
+1. Entra en tu repo en GitHub (con tu sesión iniciada, porque es privado):
+   https://github.com/juanjro1072-source/memecoin-agent
 2. Arriba a la izquierda, en el botón que dice **main**, elige la rama
    **claude/happy-brahmagupta-qsqd4t**.
 3. Botón verde **Code** → **Download ZIP**.
-4. Abre el ZIP (doble clic). Mueve la carpeta a **Documentos** y cámbiale el
-   nombre a `memecoin-agent`.
+4. Abre el ZIP (doble clic). Sale una carpeta con un nombre largo
+   (`memecoin-agent-claude-happy-brahmagupta-qsqd4t`). Muévela a
+   **Documentos** y cámbiale el nombre a `memecoin-agent`.
+
+> En el Finder la carpeta se llama **Documentos**, pero en la Terminal se
+> escribe siempre **`Documents`** (en inglés). Es la misma carpeta.
 
 ### 4. Entrar en la carpeta y comprobar que todo funciona
 
@@ -49,7 +54,7 @@ cd ~/Documents/memecoin-agent
 python3 -m unittest discover -s tests -t .
 ```
 
-Al final debe decir **OK**.
+Al final debe decir algo como `Ran 43 tests` y debajo **OK**.
 
 ### 5. Probar la conexión con DexScreener y RugCheck
 
@@ -124,6 +129,41 @@ el observador: `python3 -m vivo resumen`.
 Para empezar de cero (borra toda la historia): `rm -rf diario/vivo`.
 
 ---
+
+## Qué debes ver si todo va bien
+
+1. **Al arrancar**, enseguida:
+   `👀 Observador en MODO SOMBRA (precios reales, dinero ficticio). Ciclo cada 120 s.`
+2. **En el primer minuto** (puede tardar hasta 1 minuto, porque consulta
+   RugCheck con calma), una línea así:
+   `14:32  🔍 25 tokens revisados · 2 decisiones nuevas`.
+   El primer número **no debe ser 0** siempre.
+3. **Cada 2 minutos**, otra línea 🔍. Muchas dirán `0 decisiones nuevas`:
+   es normal, porque la mayoría de los tokens no tiene hype suficiente.
+4. **De vez en cuando**, decisiones:
+   - `🔴 rechazada (seguridad)` será lo más común. Las memecoins reales están
+     llenas de trampas.
+   - `🟢 compra sombra $10.00`: unas pocas al día (como máximo 3 con tus
+     límites).
+5. Se crea la carpeta `diario/vivo/` con el archivo `resumen_HOY.md`.
+6. **Una hora después** de cada decisión, su autopsia ya tiene el dato
+   "A 1 hora".
+
+## Señales de problema
+
+- Una línea `⚠️ No pude hablar con DexScreener` **suelta** no es grave: el
+  observador lo reintenta solo. Si sale **en todos los ciclos**, hay un
+  problema de internet o de la página.
+- `🔍 0 tokens revisados` durante más de 10 minutos seguidos.
+- **Todas** las decisiones salen `rechazada (seguridad)` y, al abrir sus
+  autopsias, el motivo es siempre «falta el dato» o «no se pudo consultar
+  RugCheck». Las autopsias están en `diario/vivo/FECHA/`.
+- Aparece un texto que empieza por `Traceback`: el programa se rompió.
+  Cópiame todo ese texto.
+- Pasan más de 5 minutos sin ninguna línea nueva.
+
+En cualquiera de estos casos: detenlo con `Control` + `C` y mándame lo que
+salió en la Terminal.
 
 ## Si algo falla
 
