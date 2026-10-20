@@ -1,0 +1,18 @@
+# Límites de riesgo de memecoin-agent.
+# Sólo el dueño cambia este archivo. Las líneas que empiezan con # son notas.
+
+# "sombra" = dinero ficticio (por defecto).  "real" = dinero de verdad.
+# Para pasar a "real" hay que cambiarlo a mano. El agente nunca lo hace.
+modo = "sombra"
+
+# Dinero ficticio con el que arranca el modo sombra (en dólares).
+saldo_sombra_inicial_usd = 1000
+
+# Máximo que se puede gastar en UNA operación (dólares).
+max_por_operacion_usd = 10
+
+# Máximo que se puede gastar en total en UN día (dólares).
+max_por_dia_usd = 30
+
+# Máximo que puede haber invertido en total en UNA wallet (dólares).
+max_por_wallet_usd = 100
