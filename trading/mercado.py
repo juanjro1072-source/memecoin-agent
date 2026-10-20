@@ -192,11 +192,19 @@ class Ejecucion:
     honeypot: bool = False
 
 
+def impacto_pct(liquidez_usd: float, valor_usd: float) -> float:
+    """Cuánto empeora el precio (en %) una orden de valor_usd en un pool con esa liquidez.
+
+    Pool de producto constante: cuanto más grande la orden frente a la
+    liquidez, peor precio. La mitad de la liquidez es el lado en dólares.
+    """
+    reserva = max(liquidez_usd / 2, 1.0)
+    return valor_usd / (reserva + valor_usd) * 100
+
+
 def _slippage_pct(rng: random.Random, token: Token, valor_usd: float) -> float:
-    # Pool de producto constante: cuanto más grande la orden frente a la
-    # liquidez, peor precio. Más un poco de ruido por el movimiento del mercado.
-    reserva = max(token.liquidez / 2, 1.0)
-    return valor_usd / (reserva + valor_usd) * 100 + abs(rng.gauss(0, 0.6))
+    # Impacto en el pool más un poco de ruido por el movimiento del mercado.
+    return impacto_pct(token.liquidez, valor_usd) + abs(rng.gauss(0, 0.6))
 
 
 def comprar(rng: random.Random, token: Token, monto_usd: float, slippage_max: float) -> Ejecucion:

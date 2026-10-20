@@ -76,6 +76,9 @@ opera**. Ante la duda, no se opera.
   y propone cambios en un informe; el dueño decide si los aplica. En el
   laboratorio, la regla 5 se cumple así (decisión del dueño): autopsias
   completas para la validación final y registro compacto para el resto.
+- Existe el observador en vivo (`vivo/`): sólo LEE DexScreener y RugCheck
+  (Solana), sin wallet ni claves, y hace compras imaginarias. No debe
+  ganar nunca acceso a una wallet ni a firmar transacciones.
 - **No hay código que opere con dinero real.** No escribirlo hasta que el
   dueño lo pida explícitamente.
 - Pruebas: `python -m unittest discover -s tests -t .` (deben pasar antes de

@@ -95,6 +95,18 @@ costos. El informe queda en `informes/` y **nunca modifica `limites.toml`**:
 los cambios los decide el dueño. Ojo: los días son **inventados** por el
 simulador, no datos reales del mercado.
 
+## Observador en vivo (modo sombra con precios reales)
+
+```bash
+caffeinate -i python3 -m vivo     # en el Mac; Ctrl+C o PARAR.txt para detener
+```
+
+Mira memecoins **reales** de Solana (DexScreener), revisa sus wallets
+(RugCheck) y hace compras **imaginarias** con comisiones y slippage
+realistas. Guarda el precio exacto de cada decisión y el precio 1 h y 24 h
+después. Sólo lectura: sin wallet, sin claves, sin dinero real. Guía paso a
+paso: [COMO_USAR_EN_MAC.md](COMO_USAR_EN_MAC.md).
+
 ## Tests
 
 ```bash

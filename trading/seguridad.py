@@ -14,13 +14,21 @@ _NOMBRES = {
 }
 
 
+def motivo_radar(veredicto: Verdict, cfg: Config) -> str | None:
+    """Motivo para no comprar según las señales de rug-pull del radar, o None."""
+    if veredicto.risk <= cfg.riesgo_maximo:
+        return None
+    banderas = "; ".join(veredicto.risk_flags) or "sin detalle"
+    return f"riesgo del radar {veredicto.risk} (máximo {cfg.riesgo_maximo:g}): {banderas}"
+
+
 def revisar(veredicto: Verdict, billeteras: dict, cfg: Config) -> list[str]:
     """Devuelve los motivos para NO comprar. Lista vacía = pasa la revisión."""
     motivos: list[str] = []
 
-    if veredicto.risk > cfg.riesgo_maximo:
-        banderas = "; ".join(veredicto.risk_flags) or "sin detalle"
-        motivos.append(f"riesgo del radar {veredicto.risk} (máximo {cfg.riesgo_maximo:g}): {banderas}")
+    radar = motivo_radar(veredicto, cfg)
+    if radar:
+        motivos.append(radar)
 
     for clave, nombre in _NOMBRES.items():
         if billeteras.get(clave) is None:

@@ -21,3 +21,6 @@ diario/sombra/
 # y se regeneran al correrlo. Sólo se sube INFORME.md.
 informes/*/registro_compacto.csv.gz
 informes/*/validacion/
+
+# Observador en vivo: su memoria y diarios se quedan en tu Mac
+diario/vivo/
